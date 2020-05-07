@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redisvm
+spec:
+  selector:
+    matchLabels:
+      app: redisvm
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redisvm
+    spec:
+      containers:
+      - name: redisvm
+        image: gcr.io/decoded-reducer-258105/redisvm
+        ports:
+        - containerPort: 6379
+          protocol: TCP
