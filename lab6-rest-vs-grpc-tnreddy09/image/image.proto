@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+message Dimensions {
+    int32 height = 1;
+    int32 widht = 2;
+}
+
+message Image{
+    bytes image = 2;
+}
+
+service ImageService {
+    rpc ImageDimensions(Image) returns (Dimensions) {}
+}

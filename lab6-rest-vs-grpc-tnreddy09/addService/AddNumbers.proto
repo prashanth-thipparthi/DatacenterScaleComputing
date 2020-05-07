@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+message input {
+    int32 a = 1;
+    int32 b = 2;
+}
+message Number {
+    int32 value = 3;
+}
+
+service AddNumbers {
+    rpc AddNumbers(input) returns (Number) {}
+}

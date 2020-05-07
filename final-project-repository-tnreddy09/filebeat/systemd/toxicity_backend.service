@@ -1,0 +1,18 @@
+[Unit]
+Description=toxicity-backend
+After=network.target
+[Service]
+WorkingDirectory=/srv/toxicity-comments
+Type=simple
+Restart=always
+RestartSec=1
+User=rajat
+ExecStart=/home/rajat/.conda/envs/transformers/bin/python3 /srv/toxicity-comments/server.py
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=toxicitybackend
+
+
+[Install]
+WantedBy=multi-user.target
+

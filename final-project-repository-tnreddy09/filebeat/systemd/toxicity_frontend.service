@@ -1,0 +1,18 @@
+[Unit]
+Description=toxicity-detection
+After=network.target
+[Service]
+WorkingDirectory=/srv/toxicity-frontend
+Type=simple
+Restart=always
+RestartSec=1
+User=rajat
+ExecStart=/usr/local/bin/serve -s build
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=toxicityfrontend
+
+
+[Install]
+WantedBy=multi-user.target
+

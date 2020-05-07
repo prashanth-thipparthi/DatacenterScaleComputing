@@ -1,0 +1,71 @@
+##
+## Sample Flask REST server implementing two methods
+##
+## Endpoint /api/image is a POST method taking a body containing an image
+## It returns a JSON document providing the 'width' and 'height' of the
+## image that was provided. The Python Image Library (pillow) is used to
+## proce#ss the image
+##
+## Endpoint /api/add/X/Y is a post or get method returns a JSON body
+## containing the sum of 'X' and 'Y'. The body of the request is ignored
+##
+##
+from flask import Flask, request, Response
+import jsonpickle
+import numpy as np
+from PIL import Image
+import io
+
+# Initialize the Flask application
+app = Flask(__name__)
+
+# route http posts to this method
+@app.route('/api/add/<num1>/<num2>', methods=['GET'])
+def add_numbers(num1, num2):
+    r = request
+    try:
+        '''
+        req_data = jsonpickle.decode(r.data)
+        print(req_data)
+        a = int(req_data['a'])
+        b = int(req_data['b'])
+        '''
+        num1 = int(num1)
+        num2 = int(num2)
+        c = num1 + num2
+        print("a:",num1)
+        print("b:",num2)
+        print("c:",c)
+        response = {'result':c}
+    except Exception as e:
+        print(e)
+        response = { 'result': 0}
+    # encode response using jsonpickle
+    response_pickled = jsonpickle.encode(response)
+
+    return Response(response=response_pickled, status=200, mimetype="application/json")
+
+
+# route http posts to this method
+@app.route('/api/image', methods=['POST'])
+def image_dimensions():
+    r = request
+    # convert the data to a PIL image type so we can extract dimensions
+    try:
+        ioBuffer = io.BytesIO(r.data)
+        img = Image.open(ioBuffer)
+    # build a response dict to send back to client
+        response = {
+            'width' : img.size[0],
+            'height' : img.size[1]
+            }
+    except:
+        response = { 'width' : 0, 'height' : 0}
+    # encode response using jsonpickle
+    response_pickled = jsonpickle.encode(response)
+
+    return Response(response=response_pickled, status=200, mimetype="application/json")
+
+
+# start flask app
+app.run(host="0.0.0.0", port=5000, debug = True)
